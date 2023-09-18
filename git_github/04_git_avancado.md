@@ -1,3 +1,29 @@
+# GitHub x ssh
+Podemos cadastrar chaves ssh para realizar o download/upload contínuo de de
+dados para os repositórios através da autenticação ssh. Essa é uma prática
+segura e ágil de se trabalhar, visto que uma vez autenticado com ssh, não será
+necessário redigitar a senha em cada push.
+
+### Criando chave ssh
+Antes de clonarmos os repositórios, devemos inicialmente gerar os pares de
+chaves ssh, e vincularmos a chave pública ao github.
+
+### Gerando a chave ssh
+```
+ssh-keygen -b 4096
+```
+
+### Copiando chave ssh pública
+Agora vamos 'printar' o conteúdo do arquivo que contém a chave gerada e copiar
+para então adicionar ao github.
+```
+cat ~/.ssh/id_rsa.pub
+```
+
+Para adicionar uma chave ssh ao seu github siga o artigo publicado no
+[GitHub Docs](https://docs.github.com/pt/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
+
+
 # Trabalhando com repositórios remotos
 
 Quando um repositório é clonado, ou seja, sua origem é um __bare__ (local ou
