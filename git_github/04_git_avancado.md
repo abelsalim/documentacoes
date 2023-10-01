@@ -315,3 +315,44 @@ as alterações.
 # Realizando o push para o bare repositório
 git push origin master
 ```
+
+
+# Utilizando o fetch e rebase para prevenir conflitos
+
+Levando em consideração os requisitos necessários para solução do problema, é
+interessante poder evitá-los mesmo que não atualize o repositório previamente.
+Isso pode ser possível para o 'desenvolvedor_02' caso o mesmo opte em utilizar
+o comando `fetch` para realizar o download do conteúdo do bare repositório e
+posteriormente utilizar diretamente o comando `rebase`. Essa seria a sequência
+de passos:
+
+```
+# Acessar o repositório do desenvolvedor_02
+cd desenvolvedor_02
+
+# Adicionando nome de usuário ao repositório
+git config user.name 'desenvolvedor_02'
+
+# Adicionando email de usuário ao repositório
+git config user.email 'desenvolvedor_02@proton.me'
+
+# Criar arquivo README.md
+touch README.md
+
+# Acessar arquivo e altera-lo
+vim README.md {
+    Projeto referente ao faturamento de cf'e
+}
+
+# Tornando o arquivo 'README.md' rastreável
+git add README.md
+
+# Realizando commit do arquivo
+git commit -m 'Criando README.md'
+
+# Realizando o download do bare repositório
+git fetch
+
+# Mesclando dados com o rebase
+git rebase
+```
