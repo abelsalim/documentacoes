@@ -1,5 +1,6 @@
 select
     empresa.id,
+    participante.id,
     participante.nome
 
 from sped_empresa as empresa
