@@ -130,7 +130,6 @@ def executa(arquivo):
                         escreve_dados_csv(cpf, celular)
 
         except ValueError:
-            breakpoint()
             print(ValueError)
 
         except TypeError:
