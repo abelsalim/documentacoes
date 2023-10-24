@@ -36,9 +36,9 @@ agrupado as (
     select
         empresa.nome as empresa,
         sum(dados.estoque) as estoque,
-        sum(dados.vr_custo_venda) as vr_custo_venda,
-        sum(dados.preco_venda) as preco_venda,
-        sum(dados.vr_custo_ultima_compra) as vr_custo_ultima_compra
+        sum(dados.vr_custo_venda * dados.estoque) as vr_custo_venda,
+        sum(dados.preco_venda * dados.estoque) as preco_venda,
+        sum(dados.vr_custo_ultima_compra * dados.estoque) as vr_custo_ultima_compra
 
     from
         dados
