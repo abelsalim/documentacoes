@@ -6,9 +6,9 @@ with dados as (
         ) as numero,
         estoque.proprietario_local_id as proprietario_local_id,
         saldo.saldo as estoque,
-        produto.vr_custo_venda as vr_custo_venda,
-        produto.preco_venda as preco_venda,
-        produto.vr_custo_ultima_compra as vr_custo_ultima_compra
+        coalesce(produto.vr_custo_venda, 0) as vr_custo_venda,
+        coalesce(produto.preco_venda, 0) as preco_venda,
+        coalesce(produto.vr_custo_ultima_compra, 0) as vr_custo_ultima_compra
 
     from
         estoque_saldo as saldo
