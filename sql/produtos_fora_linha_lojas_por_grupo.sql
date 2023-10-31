@@ -1,5 +1,6 @@
 with dados as (
     select
+        empresa_participante.nome as empresa,
         grupo.nome as grupo,
         produto.codigo as codigo,
         produto.nome as produto,
@@ -9,6 +10,10 @@ with dados as (
         estoque_saldo_hoje as saldo_hoje
         left join estoque_local as estoque
             on estoque.id = saldo_hoje.local_id
+        join sped_participante as empresa_participante
+            on empresa_participante.id = estoque.proprietario_local_id
+        join sped_empresa as empresa
+            on empresa.participante_id = empresa_participante.id
         left join sped_produto as produto
             on produto.id = saldo_hoje.produto_id
         join sped_produto_familia as subgrupo
@@ -29,12 +34,15 @@ with dados as (
         and subgrupo.familia_superior_id is not null
         -- produtos de revenda
         and produto.tipo = '00'
-        -- Se familia superior igual ao valor repassado
-        -- and grupo.id in (2)
+        -- Se houver grupo
+        -- and grupo.id = 2
+        -- Se houver uma filial específica
+        and empresa.id = 376
 ),
 
 agrupado as (
     select
+        dados.empresa as empresa,
         dados.grupo as grupo,
         dados.codigo as codigo,
         dados.produto as produto,
@@ -44,6 +52,7 @@ agrupado as (
         dados
 
     group by
+        dados.empresa,
         dados.grupo,
         dados.codigo,
         dados.produto
@@ -53,15 +62,7 @@ agrupado as (
 )
 
 select
-    agrupado.*,
-    -- Geral
-    sum(agrupado.saldo) over geral as total_geral_saldo,
-    -- Grupo 1
-    sum(agrupado.saldo) over grupo_1 as grupo_1_saldo
+    agrupado.*
 
 from
     agrupado
-
-window
-    geral as (),
-    grupo_1 as (partition by agrupado.grupo)
