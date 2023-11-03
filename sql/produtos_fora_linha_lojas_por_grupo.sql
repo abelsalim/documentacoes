@@ -62,7 +62,16 @@ agrupado as (
 )
 
 select
-    agrupado.*
+    agrupado.*,
+    -- Geral
+    sum(agrupado.saldo) over geral as total_geral_saldo,
+    -- Grugo 1
+    sum(agrupado.saldo) over grupo_1 as grupo_1_saldo
+
 
 from
     agrupado
+
+window
+    geral as (),
+    grupo_1 as (partition by agrupado.empresa)
