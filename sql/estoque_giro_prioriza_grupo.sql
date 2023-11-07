@@ -5,19 +5,19 @@ with dados_venda as (
 
     -- Pegando venda do mes retrasado
         case
-            when documento.data_emissao between '2023-09-04' and '2023-11-03'
+            when documento.data_emissao between '2023-11-01' and '2023-11-30'
             then coalesce(item.quantidade, 0)
         end as qtd_mes_atual,
 
     -- Pegando venda do mes passado
         case
-            when documento.data_emissao between '2023-10-04' and '2023-11-03'
+            when documento.data_emissao between '2023-10-01' and '2023-10-31'
             then coalesce(item.quantidade, 0)
         end as qtd_mes_passado,
 
     -- Pegando venda do mes atual
         case
-            when documento.data_emissao between '2023-10-19' and '2023-11-03'
+            when documento.data_emissao between '2023-09-01' and '2023-09-30'
             then coalesce(item.quantidade, 0)
         end as qtd_mes_retrasado
 
@@ -29,7 +29,7 @@ with dados_venda as (
             on operacao.id = documento.operacao_id
 
     where
-        documento.data_emissao between '2023-09-02' and '2023-11-01'
+        documento.data_emissao between '2023-09-01' and '2023-11-30'
         and documento.simulacao = False
         and documento.situacao_nfe = 'autorizada'
         and operacao.eh_operacao_venda = True
@@ -94,7 +94,7 @@ dados as (
 
 agrupado as (
     select
-        dados_venda.produto_id as produto_id,
+        produto.id as produto_id,
         produto.codigo as codigo,
         produto.nome as nome,
         sum(coalesce(dados_venda.qtd_mes_retrasado, 0)) as qtd_mes_retrasado,
@@ -117,12 +117,12 @@ agrupado as (
             on dados_venda.produto_id = produto.id
 
     where
-        produto.fabricante_id = 1316392
-        and familia.familia_superior_id = 4
+        produto.fabricante_id = 9331
+        and familia.familia_superior_id = 3
 
 
     group by
-        dados_venda.produto_id,
+        produto.id,
         produto.codigo,
         produto.nome,
         saldos_agora_assistencia.saldo_assistencia,
@@ -130,7 +130,7 @@ agrupado as (
         produto.fora_linha
 ),
 
-dados_calculados as (
+calculo as (
     select
         agrupado.codigo as codigo,
         agrupado.nome as nome,
@@ -140,28 +140,30 @@ dados_calculados as (
         agrupado.qtd_mes_atual as qtd_mes_atual,
         agrupado.saldo_mes_agora as saldo_mes_agora,
         agrupado.saldo_assistencia as saldo_assistencia,
+        agrupado.qtd_mes_retrasado + agrupado.qtd_mes_passado + agrupado.qtd_mes_atual as qtd_total,
+        agrupado.dias_cobertura as dias_cobertura,
         coalesce(dados.qtd_externo, 0) as qtd_externo,
         (
             agrupado.saldo_mes_agora + agrupado.saldo_assistencia + coalesce(dados.qtd_externo, 0)
         ) as saldo_total,
 
         -- Cáuculo da cobertura
-        cast(
-            case
-                when
-                    agrupado.qtd_mes_retrasado + agrupado.qtd_mes_passado + agrupado.qtd_mes_atual > 0
-                then round(
-                    agrupado.saldo_mes_agora / ((
-                        (agrupado.qtd_mes_retrasado + agrupado.qtd_mes_passado + agrupado.qtd_mes_atual) / agrupado.dias_cobertura
-                    ) * 30)
-                , 2)
-                else 0
-            end as numeric(8, 2)
-        ) as cobertura,
+        case
+            when
+                agrupado.saldo_mes_agora > 0 and
+                agrupado.qtd_mes_retrasado + agrupado.qtd_mes_passado + agrupado.qtd_mes_atual > 0
+            then round(
+                agrupado.saldo_mes_agora / ((
+                    (agrupado.qtd_mes_retrasado + agrupado.qtd_mes_passado + agrupado.qtd_mes_atual) / agrupado.dias_cobertura
+                ) * 30)
+            , 2)
+            else 0
+        end as cobertura,
 
         -- Excesso?
         case
-            when 
+            when
+                agrupado.saldo_mes_agora > 0 and
                 agrupado.qtd_mes_retrasado + agrupado.qtd_mes_passado + agrupado.qtd_mes_atual > 0
             then
                 case
@@ -178,7 +180,7 @@ dados_calculados as (
 
     from
         agrupado
-        join dados
+        left join dados
             on dados.produto_id = agrupado.produto_id
 
     where
@@ -186,25 +188,44 @@ dados_calculados as (
         or agrupado.qtd_mes_passado > 0
         or agrupado.qtd_mes_atual > 0
         or agrupado.saldo_mes_agora > 0
+),
+
+soma_final as (
+    select
+        calculo.*,
+        -- Geral
+        sum(calculo.qtd_mes_retrasado) over geral as total_geral_qtd_mes_retrasado,
+        sum(calculo.qtd_mes_passado) over geral as total_geral_qtd_mes_passado,
+        sum(calculo.qtd_mes_atual) over geral as total_geral_qtd_mes_atual,
+        sum(calculo.saldo_mes_agora) over geral as total_geral_saldo_mes_agora,
+        sum(calculo.saldo_assistencia) over geral as total_geral_saldo_assistencia,
+        sum(calculo.qtd_externo) over geral as total_geral_qtd_externo,
+        sum(calculo.saldo_total) over geral as total_geral_saldo_total
+
+    from
+        calculo
+
+    window
+        geral as ()
+
+    order by
+        calculo.codigo
 )
 
-
 select
-    dados_calculados.*,
-    -- Geral
-    sum(dados_calculados.qtd_mes_retrasado) over geral AS total_geral_qtd_mes_retrasado,
-    sum(dados_calculados.qtd_mes_passado) over geral AS total_geral_qtd_mes_passado,
-    sum(dados_calculados.qtd_mes_atual) over geral AS total_geral_qtd_mes_atual,
-    sum(dados_calculados.saldo_mes_agora) over geral AS total_geral_saldo_mes_agora,
-    sum(dados_calculados.saldo_assistencia) over geral AS total_geral_saldo_assistencia,
-    sum(dados_calculados.qtd_externo) over geral AS total_geral_qtd_externo,
-    sum(dados_calculados.saldo_total) over geral AS total_geral_saldo_total
+    soma_final.*,
+    -- Cáuculo da cobertura
+    case
+        when
+            soma_final.total_geral_saldo_mes_agora > 0 and
+            soma_final.total_geral_qtd_mes_retrasado + soma_final.total_geral_qtd_mes_passado + soma_final.total_geral_qtd_mes_atual > 0
+        then round(
+            soma_final.total_geral_saldo_mes_agora / ((
+                (soma_final.total_geral_qtd_mes_retrasado + soma_final.total_geral_qtd_mes_passado + soma_final.total_geral_qtd_mes_atual) / soma_final.dias_cobertura
+            ) * 30)
+        , 2)
+        else 0
+    end as total_geral_cobertura
 
 from
-    dados_calculados
-
-window
-    geral as ()
-
-order by
-    dados_calculados.codigo
+    soma_final
