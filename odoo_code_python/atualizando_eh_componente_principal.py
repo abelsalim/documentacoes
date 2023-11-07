@@ -11,9 +11,9 @@ def escreve_no_banco(produto, dados):
     produto.invalidate_cache()
 
 
-def atualiza(produto):
+def atualiza(produto, eh_componente):
     # Dicionário para atualização
-    dados = {'eh_componente_principal': True}
+    dados = {'eh_componente_principal': eh_componente}
 
     # Atualiza as alterações
     escreve_no_banco(produto, dados)
@@ -24,28 +24,38 @@ def executa(arquivo):
     with open(arquivo, 'r') as arquivo_csv:
         arquivo_csv = csv.reader(arquivo_csv, delimiter='|')
         try:
-            for indice, codigo in enumerate(arquivo_csv):
+            for indice, linha in enumerate(arquivo_csv):
+
+                # Pula cabeçalho ou linha incompleta
+                if len(linha) != 2:
+                    continue
+
+                codigo, eh_componente = linha
+
+                # Converte em booleano
+                eh_componente = True if eh_componente == 'S' else False
 
                 # selecionando produto
                 produtos = self.env['sped.produto'].search(
-                    [('codigo', 'in', codigo)]
+                    [('codigo', '=', codigo)]
                 )
 
-                # Se não tem o participante continua
+                # Sai se não tem o produtos
                 if not produtos:
                     continue
 
-                # Itera em participante no caso de cadastros duplicado no odoo
+                # Itera em produtos no caso de cadastros duplicado
                 for produto in produtos:
                     # Variável de status
                     status = False
 
                     # Se não tem celular atualiza
-                    if not produto.eh_componente_principal:
-                        atualiza(produto)
+                    if produto.eh_componente_principal != eh_componente:
+                        atualiza(produto, eh_componente)
                         status = True
 
-                    status = 'Atualizado' if status else 'Não alterado'
+
+                    status = 'Atualizado!' if status else 'Não alterado!'
 
                     print(f'{indice} - {produto.codigo} - {status}')
 
