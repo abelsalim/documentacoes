@@ -23,6 +23,8 @@ with dados as (
         and participante.cliente_negativado_spc = True
         and lancamento.situacao_divida not in ('provisorio', 'a_vencer', 'vence_hoje', 'quitado', 'baixado')
         and lancamento.empresa_id = 360
+        and age(current_date, lancamento.data_vencimento) >= interval '35 days'
+        and age(current_date, lancamento.data_vencimento) <= interval '1825 days'
 ),
 
 agrupado as (
