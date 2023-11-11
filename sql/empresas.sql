@@ -5,4 +5,7 @@ select
 
 from sped_empresa as empresa
     left join sped_participante as participante
-        on participante.id = empresa.participante_id;
+        on participante.id = empresa.participante_id
+
+order by
+    participante.nome
