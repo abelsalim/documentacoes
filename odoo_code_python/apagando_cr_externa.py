@@ -24,8 +24,8 @@ def executa():
 
         del numero
 
-    # Limpando cache
-    lote.invalidate_cache()
+        # Limpando cache
+        lote.invalidate_cache()
 
 
 executa()
