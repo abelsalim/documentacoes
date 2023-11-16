@@ -1,6 +1,6 @@
 def executa():
     # selecionando produto
-    lotes = self.env['finan.lote.cobranca'].search()
+    lotes = self.env['finan.lote.cobranca'].search([])
 
     # Itera em produtos no caso de cadastros duplicado no odoo
     for lote in lotes:
