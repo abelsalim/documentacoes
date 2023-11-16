@@ -7,7 +7,9 @@ def executa():
     # selecionando produto
     produtos = self.env['sped.produto'].search(
         [
-            ('disponivel_ecommerce', '=', True)
+            ('disponivel_ecommerce', '=', True),
+            ('active', '=', True),
+            ('permite_venda', '=', True)
         ]
     )
 
