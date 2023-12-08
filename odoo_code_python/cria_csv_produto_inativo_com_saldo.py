@@ -54,7 +54,7 @@ def executa():
 
             linha_csv = {
                 'CODIGO': produto.codigo,
-                'QUANTIDADE': 0,
+                'QUANTIDADE': produto.saldo_hoje_venda,
                 'VR_UNITARIO': produto.preco_venda
             }
 
