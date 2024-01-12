@@ -1,14 +1,14 @@
 from tqdm import tqdm
 
 def executa():
-    # selecionando produto
+    # selecionando lotes
     lotes = self.env['pedido.documento'].search(
         [
             ('operacao_id', '=', 89)
         ]
     )
 
-    # Itera em produtos no caso de cadastros duplicado no odoo
+    # Itera em lotes
     for lote in tqdm(lotes):
         numero = lote.numero
         print(f'lote: {numero}')
