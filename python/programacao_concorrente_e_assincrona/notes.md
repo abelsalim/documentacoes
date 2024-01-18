@@ -1,4 +1,4 @@
-# Esse arquivo contém um dicionário de termos que aborda o assunto
+# Esse arquivo contém um dicionário de termos sobre programação assíncrona e concorrente
 
 ## GIL - Global Interpreter Lock
 O GIL é um mecanismo de controle de execução do CPython, e o mesmo tem a
@@ -12,11 +12,11 @@ sistema e consequentemente impede o aproveitamento total da concorrência.
 > GIL.
 
 ## Threads
-Trata-se fragmentar uma linha de processamento em múltiplas linhas de execução,
-onde possibilita a execução simultânea de coisas que não precisão ser
+Trata-se de fragmentar uma linha de processamento em múltiplas linhas de
+execução, onde possibilita a execução simultânea de coisas que não precisam ser
 executadas de forma sequencial.
 
 ## Processos
 Processo nada mais é do que uma instância parcial ou não de uma programa como
-um todo, ou seja, um processo ou um aglomerado de processos compõem um programa
+um todo, portanto um processo ou um aglomerado de processos compõem um programa
 computacional.
