@@ -4,30 +4,9 @@ with dados as (
         os.numero as os,
         coalesce(to_char(os.data_orcamento, 'DD/MM/YYYY'), '') as data_criacao,
         coalesce(pedido.numero, '') as pedido,
-        case
-            when
-                cliente.nome is not null
-            then
-                concat(cliente.nome, ' [', cliente.cnpj_cpf,']')
-            else
-                ''
-        end as cliente,
-        case
-            when
-                loja_venda.nome is not null
-            then
-                concat(loja_venda.nome, ' [', loja_venda.cnpj_cpf,']')
-            else
-                ''
-        end as loja_venda,
-        case
-            when
-                loja_montagem.nome is not null
-            then
-                concat(loja_montagem.nome, ' [', loja_montagem.cnpj_cpf,']')
-            else
-                ''
-        end as loja_montagem,
+        coalesce(concat(cliente.nome, ' [', cliente.cnpj_cpf,']'), '') as cliente,
+        coalesce(loja_venda.nome, '') as loja_venda,
+        coalesce(loja_montagem.nome, '') as loja_montagem,
         coalesce(regional.nome, '') as regional,
         coalesce(montador.nome, '') as montador,
         coalesce(etapa.nome, '') as etapa
