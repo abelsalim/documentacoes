@@ -4,8 +4,8 @@ import colorama
 from queue import Queue
 from threading import Thread
 from programacao_concorrente_e_assincrona.scripts.constants.threads import (
-    iniciando,
-    retorno_dados
+    INICIANDO,
+    RETORNO_DADOS
 )
 
 
@@ -20,7 +20,7 @@ def consumir_dados(queue):
         valor = queue.get()
 
         print(
-            colorama.Fore.RED + retorno_dados.format(valor * 2),
+            colorama.Fore.RED + RETORNO_DADOS.format(valor * 2),
             flush=True
         )
 
@@ -32,7 +32,7 @@ def consumir_dados(queue):
 def gera_dados(queue):
     for indice in range(1, 11):
         print(
-            colorama.Fore.GREEN + retorno_dados.format(indice),
+            colorama.Fore.GREEN + RETORNO_DADOS.format(indice),
             flush=True
         )
 
@@ -44,7 +44,7 @@ def gera_dados(queue):
 
 if __name__ == '__main__':
     # Delimita o início
-    print(colorama.Fore.WHITE + iniciando, flush=True)
+    print(colorama.Fore.WHITE + INICIANDO, flush=True)
     # Instanciando classe Queue
     queue = Queue()
 
