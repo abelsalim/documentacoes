@@ -1,99 +1,41 @@
-import time
-import random
-
-from threading import RLock, Thread
-from programacao_concorrente_e_assincrona.scripts.constants.threads import (
-    ERRO_VALIDA_DADOS,
-    SUCESSO_VALIDA_DADOS
+from threading import Thread
+from programacao_conc_assinc.scripts.secao_03.models.admin import Admin
+from programacao_conc_assinc.scripts.constants.threads import (
+    STATUS_INICIA_TRANSFERENCIA,
+    STATUS_FINALIZA_TRANSFERENCIA
 )
 
 
-lock = RLock()
+def main(objeto_admin):
+    # Gera constas 'aleatórias'
+    contas = objeto_admin.criar_contas_aleatorias()
 
-
-class Conta:
-
-    def __init__(self, saldo=0):
-        self.saldo = saldo
-
-
-def pega_duas_contas(contas):
-    c1 = random.choice(contas)
-    c2 = random.choice(contas)
-
-    while c1 == c2:
-        c2 = random.choice(contas)
-
-    return c1, c2
-
-
-def valida_banco(contas, total):
-    with lock:
-        atual = sum(conta.saldo for conta in contas)
-
-    if atual != total:
-        print(ERRO_VALIDA_DADOS.format(f'{atual:.2f}', f'{total:.2f}'))
-    else:
-        print(SUCESSO_VALIDA_DADOS.format(f'{atual:.2f}', f'{total:.2f}'))
-
-
-def transferir(origem, destino, valor):
-    if origem.saldo < valor:
-        return
-
-    with lock:
-        # Remove valor da primeira conta
-        origem.saldo -= valor
-
-        time.sleep(0.001)
-
-        # insere valor na segunda conta
-        destino.saldo += valor
-
-
-def criar_contas():
-    return [
-        Conta(saldo=random.randint(5_000, 10_000)),
-        Conta(saldo=random.randint(5_000, 10_000)),
-        Conta(saldo=random.randint(5_000, 10_000)),
-        Conta(saldo=random.randint(5_000, 10_000)),
-        Conta(saldo=random.randint(5_000, 10_000))
-    ]
-
-
-def servicos(contas, total):
-    for _ in range(1, 10_000):
-        c1, c2 = pega_duas_contas(contas)
-        valor = random.randint(1, 100)
-        transferir(c1, c2, valor)
-        valida_banco(contas, total)
-
-
-def main():
-    contas = criar_contas()
-
-    with lock:
+    # Utiliza o lock nas threads
+    with objeto_admin.lock:
         total = sum(conta.saldo for conta in contas)
 
-    print('Iniciando transferência...')
+    print(STATUS_INICIA_TRANSFERENCIA)
 
-    # As múltiplas threads ocasionam propositalmente o erro de incosistencia
-    tarefas = [
-        Thread(target=servicos, args=(contas, total)),
-        Thread(target=servicos, args=(contas, total)),
-        Thread(target=servicos, args=(contas, total)),
-        Thread(target=servicos, args=(contas, total)),
-        Thread(target=servicos, args=(contas, total)),
+    # Gera uma lista de threads
+    threads = [
+        Thread(target=objeto_admin.servicos, args=(contas, total)),
+        Thread(target=objeto_admin.servicos, args=(contas, total)),
+        Thread(target=objeto_admin.servicos, args=(contas, total)),
+        Thread(target=objeto_admin.servicos, args=(contas, total)),
+        Thread(target=objeto_admin.servicos, args=(contas, total))
     ]
 
     # inicia e delimita fim das threads
-    [tarefa.start() for tarefa in tarefas]
-    [tarefa.join() for tarefa in tarefas]
+    [tarefa.start() for tarefa in threads]
+    [tarefa.join() for tarefa in threads]
 
-    print('Transferências completas!')
+    print(STATUS_FINALIZA_TRANSFERENCIA)
 
-    valida_banco(contas, total)
+    objeto_admin.valida_banco(contas, total)
 
 
 if __name__ == '__main__':
-    main()
+    # Instanciando objeto central
+    objeto_admin = Admin()
+
+    main(objeto_admin)
