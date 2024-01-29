@@ -3,7 +3,7 @@ import colorama
 
 from queue import Queue
 from threading import Thread
-from programacao_concorrente_e_assincrona.scripts.constants.threads import (
+from programacao_conc_assinc.scripts.constants.threads import (
     INICIANDO,
     RETORNO_DADOS
 )

@@ -2,7 +2,7 @@ import time
 import random
 
 from threading import Thread
-from programacao_concorrente_e_assincrona.scripts.constants.threads import (
+from programacao_conc_assinc.scripts.constants.threads import (
     ERRO_VALIDA_DADOS,
     SUCESSO_VALIDA_DADOS
 )
