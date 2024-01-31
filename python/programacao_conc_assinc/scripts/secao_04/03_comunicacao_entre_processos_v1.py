@@ -1,7 +1,7 @@
 from multiprocessing import Pipe, Process
 
 
-def Inicia(conn):
+def inicia(conn):
     conn.send('Abel')
 
 
@@ -16,7 +16,7 @@ def main():
     connection_1, connection_2 = Pipe(duplex=True)
 
     # Instanciando os processos
-    p1 = Process(target=Inicia, args=(connection_1,))
+    p1 = Process(target=inicia, args=(connection_1,))
     p2 = Process(target=finaliza, args=(connection_2,))
 
     # inicia e delimita fim dos processos
