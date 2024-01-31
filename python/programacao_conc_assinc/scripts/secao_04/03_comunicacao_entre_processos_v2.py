@@ -1,7 +1,7 @@
 from multiprocessing import Process, JoinableQueue
 
 
-def Inicia(queue):
+def inicia(queue):
     queue.put('Abel')
 
 
@@ -19,7 +19,7 @@ def main():
     queue = JoinableQueue()
 
     # Instanciando os processos
-    p1 = Process(target=Inicia, args=(queue,))
+    p1 = Process(target=inicia, args=(queue,))
     p2 = Process(target=finaliza, args=(queue,))
 
     # inicia e delimita fim dos processos
