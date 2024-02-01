@@ -2,6 +2,9 @@ import ctypes
 
 from time import sleep
 from multiprocessing import RLock, Value, Process
+from programacao_conc_assinc.scripts.constants.multiprocessing import (
+    O_RESULTADO_DA_FUNCAO_X
+)
 
 
 def funcao_2(valor, status, lock):
@@ -15,7 +18,7 @@ def funcao_2(valor, status, lock):
             valor.value = 400
             status.value = True
 
-    print(f'O resultado da função 2 é {res}')
+    print(O_RESULTADO_DA_FUNCAO_X.format(2, res))
 
     sleep(0.001)
 
@@ -31,7 +34,7 @@ def funcao_1(valor, status, lock):
             valor.value = 200
             status.value = True
 
-    print(f'O resultado da função 1 é {res}')
+    print(O_RESULTADO_DA_FUNCAO_X.format(1, res))
 
     sleep(0.001)
 
