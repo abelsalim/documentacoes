@@ -46,9 +46,8 @@ def main():
 
     # inicia e delimita fim dos processos
     [process.start() for process in (p1, p2)]
-    print(valor.value, status.value)
+    print(valor.va)
     [process.join() for process in (p1, p2)]
-    print(valor.value, status.value)
 
 
 if __name__ == '__main__':
