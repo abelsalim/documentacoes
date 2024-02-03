@@ -2,8 +2,7 @@ import bs4
 import aiohttp
 import aiofiles
 
-from utils.funcoes import set_trace
-from asyncio import run, create_task, gather
+from asyncio import run, gather
 from programacao_conc_assinc.scripts.constants.asyncio import arquivos, retorne
 
 
