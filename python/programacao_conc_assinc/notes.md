@@ -42,3 +42,10 @@ as informações do próximo da fila.
 Processo nada mais é do que uma instância parcial ou não de uma programa como
 um todo, portanto um processo ou um aglomerado de processos compõem um programa
 computacional.
+
+# Pacotes bases - (fedora)
+* python3-aiofiles
+* python3-aiohttp+speedups
+* python3-beautifulsoup4
+* python3-fastapi
+* python3-uvicorn+standard
