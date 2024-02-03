@@ -17,7 +17,6 @@ retorne.computando_dados = 'Computando {} dados.'
 retorne.pegando_html = 'Pegando o HTML do curso {}'
 
 
-
 arquivos = SimpleNamespace()
 
 # Relacionado ao arquivos 'texto.txt' e 'links.txt'
