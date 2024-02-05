@@ -1,12 +1,11 @@
 import sqlalchemy as sa
-
-# O pathlib é utilizado com sqlite
 from pathlib import Path
 from typing import Optional
 
-from sqlalchemy.orm import Session
 from sqlalchemy.future.engine import Engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session, sessionmaker
+
+from sqlalchemy_py.scripts.secao_03_modelagem_dados.models import _all_models
 
 from sqlalchemy_py.scripts.secao_03_modelagem_dados.constants.session import (
     db_session
@@ -16,46 +15,72 @@ from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.models_base import (
 )
 
 
-__engine: Optional[Engine]
+class DatabaseManager:
 
+    def __init__(self, sqlite: bool = False) -> None:
+        self.sqlite = sqlite
+        self._engine: Optional[Engine] = None
 
-def create_engine_postgre():
-    global __engine
+    def create_engine_postgre(self):
+        # Criar mecanismo de banco de dados.
+        self._engine = sa.create_engine(
+            url=db_session.string_connection_postgresql,
+            echo=False
+        )
 
-    # Criar mecanismo de banco de dados.
-    __engine = sa.create_engine(
-        url=db_session.string_connection_postgresql,
-        echo=False
-    )
+    def create_engine_sqlite(self) -> None:
+        # Define diretório padrão para o database sqlite.
+        folder = Path(db_session.arquivo_db).parent
 
+        # Respeite o parents e se já existir não faça nada.
+        folder.mkdir(parents=True)
 
-def create_engine_sqlite():
-    global __engine
+        # Criar mecanismo de banco de dados.
+        self._engine = sa.create_engine(
+            url=db_session.string_connection_sqlite,
+            echo=False,
+            # Específico para sqlite: indica que não deve verificar se a mesma
+            # thread está acessando o banco de dados.
+            connect_args={'check_same_thread': False}
+        )
 
-    # Define diretório padrão para o database sqlite.
-    folder = Path(db_session.arquivo_db).parent
+    def create_engine(self) -> None:
+        if self._engine:
+            return
 
-    # Respeite o parents e se já existir não faça nada.
-    folder.mkdir(parents=True)
+        # Gere o mecanismo do banco sqlite
+        if self.sqlite:
+            self.create_engine_sqlite()
 
-    # Criar mecanismo de banco de dados.
-    __engine = sa.create_engine(
-        url=db_session.string_connection_sqlite,
-        echo=False,
-        # Específico para sqlite: sea que não deve verificar se a mesma
-        # thread está acessando o banco de dados.
-        connect_args={'check_same_thread': False}
-    )
+        # Senão, gere do bando postgresql
+        else:
+            self.create_engine_postgre()
 
+    def create_session(self) -> Session:
+        if not self._engine:
+            # Define Postgres
+            self.create_engine()
 
-def create_engine(sqlite: bool = False):
-    global __engine
+        _session = sessionmaker(
+            # Mecanismo do banco de dados
+            self._engine,
+            # Mantém objetos carregados pós commit
+            expire_on_commit=False,
+            # Seta a classe a ser utilizada
+            class_=Session
+        )
 
-    if __engine:
-        return
+        session: Session = _session()
 
-    # Gere o mecanismo do banco bateado o boolean 'sqlite'
-    create_engine_postgre() if sqlite else create_engine_sqlite()
+        return session
 
-    return __engine
+    def create_tables(self) -> None:
+        if not self._engine:
+            # Define Postgres
+            self.create_engine()
 
+        # Apaga a tabela se ja existir
+        ModelBase.metadata.drop_all(self._engine)
+
+        # Cria tabela
+        ModelBase.metadata.create_all(self._engine)

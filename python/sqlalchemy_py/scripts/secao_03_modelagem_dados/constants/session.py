@@ -12,6 +12,6 @@ db_session.password = 'hahaha'
 db_session.database_name = 'my_project'
 
 db_session.string_connection_postgresql = (
-    f'postgresql:///{db_session.user}:{db_session.password}@localhost:5432'
-    f'{db_session.database_name}'
+    f'postgresql://{db_session.user}:{db_session.password}@localhost:5432'
+    f'/{db_session.database_name}'
 )
