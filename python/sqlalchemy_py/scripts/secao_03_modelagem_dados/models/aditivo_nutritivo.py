@@ -24,7 +24,7 @@ class AditivoNutritivo(ModelBase):
     nome: str = sa.Column(
         sa.String(45),
         unique=True,
-        nullable=True
+        nullable=False
     )
 
     formula_quimica: str = sa.Column(
