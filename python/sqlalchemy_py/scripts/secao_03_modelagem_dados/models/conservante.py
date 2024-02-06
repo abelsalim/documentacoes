@@ -6,8 +6,8 @@ from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.models_base import (
 )
 
 
-class TipoEmbalagem(ModelBase):
-    __tablename__: str = 'tipos_embalagem'
+class Conservante(ModelBase):
+    __tablename__: str = 'conservantes'
 
     id: int = sa.Column(
         sa.BigInteger,
@@ -27,5 +27,11 @@ class TipoEmbalagem(ModelBase):
         nullable=False
     )
 
+    descricao: str = sa.Column(
+        sa.String(45),
+        unique=True,
+        nullable=False
+    )
+
     def __repr__(self) -> str:
-        return f'<Tipo Embalagem: {self.nome}>'
+        return f'<Conservante: {self.nome}>'
