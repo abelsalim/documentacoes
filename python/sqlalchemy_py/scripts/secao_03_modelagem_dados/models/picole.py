@@ -10,7 +10,7 @@ from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.sabor import (
     Sabor
 )
 from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.tipo_picole import (
-    TipoPicoles
+    TipoPicole
 )
 from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.tipo_embalagem import (
     TipoEmbalagem
@@ -48,7 +48,7 @@ class Picole(ModelBase):
 
     sabor_id: int = sa.Column(
         sa.Integer,
-        sa.ForeignKey('sabor.id')
+        sa.ForeignKey('sabores.id')
     )
 
     sabor: Sabor = orm.relationship(
@@ -56,7 +56,7 @@ class Picole(ModelBase):
         lazy='joined'
     )
 
-    tipo_embalagem_id: int = orm.relationship(
+    tipo_embalagem_id: int = sa.Column(
         sa.Integer,
         sa.ForeignKey('tipos_embalagem.id')
     )
@@ -66,12 +66,12 @@ class Picole(ModelBase):
         lazy='joined'
     )
 
-    tipo_picole_id: int = orm.relationship(
+    tipo_picole_id: int = sa.Column(
         sa.Integer,
-        sa.ForeignKey('tipo_picole.id')
+        sa.ForeignKey('tipos_picole.id')
     )
 
-    tipo_picole: TipoPicoles = orm.relationship(
+    tipo_picole: TipoPicole = orm.relationship(
         'TipoPicoles',
         lazy='joined'
     )
@@ -124,7 +124,7 @@ class Picole(ModelBase):
 
     # Picolé pode ter vários aditivos nutritivos
     aditivos_nutritivos_picole = sa.Table(
-        'aditivos_nutritivos',
+        'aditivos_nutritivos_picole',
         ModelBase.metadata,
         sa.Column(
             'aditivo_nutritivo_id',

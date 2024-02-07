@@ -6,7 +6,7 @@ from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.models_base import (
     ModelBase
 )
 from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.tipo_picole import (
-    TipoPicoles
+    TipoPicole
 )
 
 
@@ -27,10 +27,10 @@ class Lote(ModelBase):
 
     tipo_picole_id: int = sa.Column(
         sa.Integer,
-        sa.ForeignKey('tipo_picole.id')
+        sa.ForeignKey('tipos_picole.id')
     )
 
-    tipo_picole: TipoPicoles = orm.relationship(
+    tipo_picole: TipoPicole = orm.relationship(
         'TipoPicole',
         lazy='joined'
     )

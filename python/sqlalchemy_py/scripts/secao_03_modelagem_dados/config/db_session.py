@@ -5,7 +5,7 @@ from typing import Optional
 from sqlalchemy.future.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models import _all_models
+from sqlalchemy_py.scripts.secao_03_modelagem_dados.models import __all_models
 
 from sqlalchemy_py.scripts.secao_03_modelagem_dados.constants.session import (
     db_session

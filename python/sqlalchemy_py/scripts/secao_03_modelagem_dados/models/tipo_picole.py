@@ -6,7 +6,7 @@ from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.models_base import (
 )
 
 
-class TipoPicoles(ModelBase):
+class TipoPicole(ModelBase):
     __tablename__: str = 'tipos_picole'
 
     id: int = sa.Column(
