@@ -1,46 +1,55 @@
 from types import SimpleNamespace
 
-retorno = SimpleNamespace()
+retorne = SimpleNamespace()
 
 # Relacionados ao script 'insert_main.py'
-retorno.insert_ok = '{} Cadastrado com Sucesso!'
-retorno.erro_duplicidade = (
-    'O(s) parâmetro(s) {} deve(m) ser único(s)!'
+retorne.insert_ok = '{} Cadastrado com Sucesso!'
+retorne.erro_duplicidade = (
+    'Tabela: {} - O(s) parâmetro(s) {} deve(m) ser único(s)!'
 )
 
-retorno.tupla_aditivos = (
-    ('Chocolate', 'CCLT'),
-    ('Iorgut', 'IGT'),
-    ('Milho', 'MLH')
+retorne.tupla_aditivos = (
+    {'nome': 'Chocolate', 'formula_quimica': 'CCLT'},
+    {'nome': 'Iorgut', 'formula_quimica': 'IGT'},
+    {'nome': 'Milho', 'formula_quimica': 'MLH'},
 )
 
-retorno.tupla_sabores = (
-    ('Chocolate'),
-    ('Iorgut'),
-    ('Milho')
+retorne.tupla_sabores = (
+    {'nome': 'Chocolate'},
+    {'nome': 'Iorgut'},
+    {'nome': 'Milho'}
 )
 
-retorno.tupla_t_embalagem = (
-    ('Saquinhos Bopp Perola'),
-    ('Saquinhos Moreninha BOPP Perolado'),
-    ('Folhas de Papel Parafinado')
+retorne.tupla_t_embalagem = (
+    {'nome': 'Saquinhos Bopp Perola'},
+    {'nome': 'Saquinhos Moreninha BOPP Perolado'},
+    {'nome': 'Folhas de Papel Parafinado'}
 )
 
-retorno.tupla_t_picole = (
-    ('Tradicional'),
-    ('Skimo'),
-    ('Diet')
+retorne.tupla_t_picole = (
+    {'nome': 'Tradicional'},
+    {'nome': 'Skimo'},
+    {'nome': 'Diet'}
 )
 
-retorno.tupla_ingredientes = (
-    ('Nutela'),
-    ('Leite'),
-    ('Cacau')
+retorne.tupla_ingredientes = (
+    {'nome': 'Nutela'},
+    {'nome': 'Leite'},
+    {'nome': 'Cacau'}
 )
 
-retorno.tupla_conservantes = (
-    ('Pectina de glicose', 'Espessante e estabilizante'),
-    ('Xarope de glicose', 'Evitar a cristalização do sorvete'),
-    ('Álcool', 'Retardar a formação de cristais de gelo')
+retorne.tupla_conservantes = (
+    {
+        'nome': 'Pectina de glicose',
+        'descricao': 'Espessante e estabilizante'
+    },
+    {
+        'nome': 'Xarope de glicose',
+        'descricao': 'Evitar a cristalização do sorvete'
+    },
+    {
+        'nome': 'Álcool',
+        'descricao': 'Retardar a formação de cristais de gelo'
+    },
 )
 

@@ -1,7 +1,7 @@
 import sqlalchemy as sa
 
 from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.__all_models import *
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.constants.insert import retorno
+from sqlalchemy_py.scripts.secao_03_modelagem_dados.constants.insert import retorne
 from sqlalchemy_py.scripts.secao_03_modelagem_dados.config.db_session import DatabaseManager
 
 
@@ -28,52 +28,61 @@ class DataBaseInsert:
 
         return retorno_ok
 
-    def create(self, classe, *args):
+    def create(self, classe, **dados):
         # Cria objeto específico
-        objeto = classe(*args)
+        objeto = classe(**dados)
+
+        atributos = [
+            k for k, v in objeto.__dict__.items() if isinstance(v, str)
+        ]
 
         # Realiza Insert de dados
         retorno = self.realiza_insert(
             objeto,
-            retorno.erro_duplicidade.format(', '.join(objeto.__dict__.keys())),
-            retorno.insert_ok.format(classe.__name__)
+            retorne.erro_duplicidade.format(
+                classe.__name__,
+                ', '.join(atributos)
+            ),
+            retorne.insert_ok.format(classe.__name__)
         )
 
-    def conservantes(self, nome, descricao):
-        self.create(Conservante, nome, descricao)
+        print(retorno)
 
-    def ingredientes(self, nome):
-        self.create(Ingrediente, nome)
+    def conservantes(self, **kwargs):
+        self.create(Conservante, **kwargs)
 
-    def tipo_picole(self, nome):
-        self.create(TipoPicole, nome)
+    def ingredientes(self, **kwargs):
+        self.create(Ingrediente, **kwargs)
 
-    def tipo_embalagem(self, nome):
-        self.create(TipoEmbalagem, nome)
+    def tipo_picole(self, **kwargs):
+        self.create(TipoPicole, **kwargs)
 
-    def sabor(self, nome):
-        self.create(Sabor, nome)
+    def tipo_embalagem(self, **kwargs):
+        self.create(TipoEmbalagem, **kwargs)
 
-    def aditivo_nutritivo(self, nome, formula_quimica):
-        self.create(AditivoNutritivo, nome, formula_quimica)
+    def sabor(self, **kwargs):
+        self.create(Sabor, **kwargs)
+
+    def aditivo_nutritivo(self, **kwargs):
+        self.create(AditivoNutritivo, **kwargs)
 
 if __name__ == '__main__':
     insert = DataBaseInsert()
 
     # Aditivos nutritivos
-    [insert.aditivo_nutritivo(*dados) for dados in retorno.tupla_aditivos]
+    [insert.aditivo_nutritivo(**dados) for dados in retorne.tupla_aditivos]
 
     # Sabores
-    [insert.sabor(*dados) for dados in retorno.tupla_sabores]
+    [insert.sabor(**dados) for dados in retorne.tupla_sabores]
 
     # Tipo Embalagem
-    [insert.tipo_embalagem(*dados) for dados in retorno.tupla_t_embalagem]
+    [insert.tipo_embalagem(**dados) for dados in retorne.tupla_t_embalagem]
 
     # Tipo Picole
-    [insert.tipo_picole(*dados) for dados in retorno.tupla_t_picole]
+    [insert.tipo_picole(**dados) for dados in retorne.tupla_t_picole]
 
     # Ingrediente
-    [insert.ingredientes(*dados) for dados in retorno.tupla_ingredientes]
+    [insert.ingredientes(**dados) for dados in retorne.tupla_ingredientes]
 
     # Conservante
-    [insert.conservantes(*dados) for dados in retorno.tupla_conservantes]
+    [insert.conservantes(**dados) for dados in retorne.tupla_conservantes]
