@@ -72,7 +72,7 @@ class Picole(ModelBase):
     )
 
     tipo_picole: TipoPicole = orm.relationship(
-        'TipoPicoles',
+        'TipoPicole',
         lazy='joined'
     )
 
