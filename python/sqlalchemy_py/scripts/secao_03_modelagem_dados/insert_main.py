@@ -66,6 +66,13 @@ class DataBaseInsert:
     def aditivo_nutritivo(self, **kwargs):
         self.create(AditivoNutritivo, **kwargs)
 
+    def sabor(self, **kwargs):
+        self.create(Sabor, **kwargs)
+
+    def aditivo_nutritivo(self, **kwargs):
+        self.create(AditivoNutritivo, **kwargs)
+
+
 if __name__ == '__main__':
     insert = DataBaseInsert()
 
