@@ -53,3 +53,26 @@ retorne.tupla_conservantes = (
     },
 )
 
+retorne.tupla_revendedor = (
+    {
+        'nome': 'Abel Salim',
+        'razao_social': 'Abel Salim',
+        'cnpj_cpf': '000.000.001-00',
+        'celular': '88999997771',
+        'email': 'abelsalim@picole.com',
+    },
+    {
+        'nome': 'Edson Lucas',
+        'razao_social': 'Edson Lucas',
+        'cnpj_cpf': '000.000.002-00',
+        'celular': '88988886662',
+        'email': 'edsonlucas@picole.com',
+    },
+    {
+        'nome': 'Samuel Levi',
+        'razao_social': 'Samuel Levi',
+        'cnpj_cpf': '000.000.003-00',
+        'celular': '88977775553',
+        'email': 'samuellevi@picole.com',
+    },
+)

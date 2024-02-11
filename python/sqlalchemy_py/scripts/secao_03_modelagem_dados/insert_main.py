@@ -8,6 +8,7 @@ from models.tipo_embalagem import TipoEmbalagem
 from models.ingrediente import Ingrediente
 from models.conservante import Conservante
 from models.aditivo_nutritivo import AditivoNutritivo
+from models.revendedor import Revendedor
 
 
 class DataBaseInsert:
@@ -71,6 +72,8 @@ if __name__ == '__main__':
         {Ingrediente: retorne.tupla_ingredientes},
         # Conservante
         {Conservante: retorne.tupla_conservantes},
+        # Revendedor
+        {Revendedor: retorne.tupla_revendedor},
     ]
 
     # Função anônima que filtra 'Chave' e 'Valor' atribuindo a uma lista
