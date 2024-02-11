@@ -1,8 +1,13 @@
 import sqlalchemy as sa
 
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.__all_models import *
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.constants.insert import retorne
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.config.db_session import DatabaseManager
+from constants.insert import retorne
+from config.db_session import DatabaseManager
+from models.sabor import Sabor
+from models.tipo_picole import TipoPicole
+from models.tipo_embalagem import TipoEmbalagem
+from models.ingrediente import Ingrediente
+from models.conservante import Conservante
+from models.aditivo_nutritivo import AditivoNutritivo
 
 
 class DataBaseInsert:

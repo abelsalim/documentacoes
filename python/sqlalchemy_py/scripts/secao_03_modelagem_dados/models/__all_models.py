@@ -2,6 +2,7 @@ from .aditivo_nutritivo import AditivoNutritivo
 from .conservante import Conservante
 from .ingrediente import Ingrediente
 from .lote import Lote
+from .nota_fiscal import NotaFiscal
 from .picole import Picole
 from .revendedor import Revendedor
 from .sabor import Sabor

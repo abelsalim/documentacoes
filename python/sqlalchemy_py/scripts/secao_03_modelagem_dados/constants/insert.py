@@ -1,6 +1,6 @@
 from types import SimpleNamespace
 
-retorne = SimpleNamespace()
+retorne: SimpleNamespace = SimpleNamespace()
 
 # Relacionados ao script 'insert_main.py'
 retorne.insert_ok = '{} Cadastrado com Sucesso!'

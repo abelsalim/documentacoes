@@ -5,14 +5,9 @@ from typing import Optional
 from sqlalchemy.future.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models import __all_models
-
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.constants.session import (
-    db_session
-)
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.models_base import (
-    ModelBase
-)
+from models import __all_models
+from models.models_base import ModelBase
+from constants.session import session_db
 
 
 class DatabaseManager:
@@ -24,20 +19,20 @@ class DatabaseManager:
     def create_engine_postgre(self):
         # Criar mecanismo de banco de dados.
         self._engine = sa.create_engine(
-            url=db_session.string_connection_postgresql,
+            url=session_db.string_connection_postgresql,
             echo=False
         )
 
     def create_engine_sqlite(self) -> None:
         # Define diretório padrão para o database sqlite.
-        folder = Path(db_session.arquivo_db).parent
+        folder = Path(session_db.arquivo_db).parent
 
         # Respeite o parents e se já existir não faça nada.
-        folder.mkdir(parents=True)
+        folder.mkdir(parents=True, exist_ok=True)
 
         # Criar mecanismo de banco de dados.
         self._engine = sa.create_engine(
-            url=db_session.string_connection_sqlite,
+            url=session_db.string_connection_sqlite,
             echo=False,
             # Específico para sqlite: indica que não deve verificar se a mesma
             # thread está acessando o banco de dados.

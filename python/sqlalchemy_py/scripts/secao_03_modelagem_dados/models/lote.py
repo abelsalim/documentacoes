@@ -2,12 +2,9 @@ import sqlalchemy as sa
 import sqlalchemy.orm as orm
 
 from datetime import datetime
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.models_base import (
-    ModelBase
-)
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.tipo_picole import (
-    TipoPicole
-)
+
+from models.models_base import ModelBase
+from models.tipo_picole import TipoPicole
 
 
 class Lote(ModelBase):

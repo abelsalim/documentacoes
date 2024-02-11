@@ -3,15 +3,10 @@ import sqlalchemy.orm as orm
 
 from typing import List
 from datetime import datetime
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.models_base import (
-    ModelBase
-)
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.revendedor import (
-    Revendedor
-)
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.lote import (
-    Lote
-)
+
+from models.lote import Lote
+from models.revendedor import Revendedor
+from models.models_base import ModelBase
 
 
 class NotaFiscal(ModelBase):
@@ -31,7 +26,7 @@ class NotaFiscal(ModelBase):
 
     revendedor_id: int = sa.Column(
         sa.Integer,
-        sa.ForeignKey('revendedor.id')
+        sa.ForeignKey('revendedores.id')
     )
 
     revendedor: Revendedor = orm.relationship(

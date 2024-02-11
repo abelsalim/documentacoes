@@ -3,27 +3,14 @@ import sqlalchemy.orm as orm
 
 from typing import List, Optional
 from datetime import datetime
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.models_base import (
-    ModelBase
-)
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.sabor import (
-    Sabor
-)
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.tipo_picole import (
-    TipoPicole
-)
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.tipo_embalagem import (
-    TipoEmbalagem
-)
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.ingrediente import (
-    Ingrediente
-)
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.conservante import (
-    Conservante
-)
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.aditivo_nutritivo import (
-    AditivoNutritivo
-)
+
+from models.models_base import ModelBase
+from models.sabor import Sabor
+from models.tipo_picole import TipoPicole
+from models.tipo_embalagem import TipoEmbalagem
+from models.ingrediente import Ingrediente
+from models.conservante import Conservante
+from models.aditivo_nutritivo import AditivoNutritivo
 
 
 class Picole(ModelBase):
@@ -92,7 +79,7 @@ class Picole(ModelBase):
         )
     )
 
-    ingredientes: List[Ingrediente] = orm.relationship(
+    ingredientes: Optional[List[Ingrediente]] = orm.relationship(
         'Ingrediente',
         secondary=ingredientes_picole,
         backref='ingrediente',
@@ -138,7 +125,7 @@ class Picole(ModelBase):
         )
     )
 
-    aditivos_nutritivos_picole: Optional[List[Ingrediente]] = orm.relationship(
+    aditivos_nutritivos_picole: Optional[List[AditivoNutritivo]] = orm.relationship(
         'AditivoNutritivo',
         secondary=aditivos_nutritivos_picole,
         backref='aditivo_nutritivo',

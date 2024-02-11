@@ -1,9 +1,8 @@
 import sqlalchemy as sa
 
 from datetime import datetime
-from sqlalchemy_py.scripts.secao_03_modelagem_dados.models.models_base import (
-    ModelBase
-)
+
+from models.models_base import ModelBase
 
 
 class Revendedor(ModelBase):

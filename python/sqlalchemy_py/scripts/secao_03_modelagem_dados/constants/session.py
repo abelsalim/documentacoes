@@ -1,17 +1,17 @@
 from types import SimpleNamespace
 
 
-db_session = SimpleNamespace()
+session_db: SimpleNamespace = SimpleNamespace()
 
-# Relacionadas ao arquivo 'db_session.py'
-db_session.arquivo_db = 'db/picoles.sqlite'
-db_session.string_connection_sqlite = f'sqlite:///{db_session.arquivo_db}'
+# Relacionadas ao arquivo 'session_db.py'
+session_db.arquivo_db = 'db/picoles.sqlite'
+session_db.string_connection_sqlite = f'sqlite:///{session_db.arquivo_db}'
 
-db_session.user = 'salim'
-db_session.password = 'hahaha'
-db_session.database_name = 'my_project'
+session_db.user = 'salim'
+session_db.password = 'hahaha'
+session_db.database_name = 'my_project'
 
-db_session.string_connection_postgresql = (
-    f'postgresql://{db_session.user}:{db_session.password}@localhost:5432'
-    f'/{db_session.database_name}'
+session_db.string_connection_postgresql = (
+    f'postgresql://{session_db.user}:{session_db.password}@localhost:5432'
+    f'/{session_db.database_name}'
 )
