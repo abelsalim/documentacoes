@@ -9,7 +9,11 @@ from models.ingrediente import Ingrediente
 from models.conservante import Conservante
 from models.aditivo_nutritivo import AditivoNutritivo
 from models.revendedor import Revendedor
+from models.lote import Lote
+from models.nota_fiscal import NotaFiscal
+from models.picole import Picole
 
+from utils.funcoes import set_trace
 
 class DataBaseInsert:
 
@@ -31,6 +35,12 @@ class DataBaseInsert:
                 session.rollback()
 
                 return retorno_Erro
+
+            except sa.exc.DataError as erro:
+                # Restaura estado anterior - rollback
+                session.rollback()
+
+                return str(erro.orig)
 
         return retorno_ok
 
@@ -74,6 +84,10 @@ if __name__ == '__main__':
         {Conservante: retorne.tupla_conservantes},
         # Revendedor
         {Revendedor: retorne.tupla_revendedor},
+        # Lote
+        {Lote: retorne.tupla_lote},
+        # NotaFiscal
+        {NotaFiscal: retorne.tupla_nota_fical},
     ]
 
     # Função anônima que filtra 'Chave' e 'Valor' atribuindo a uma lista
