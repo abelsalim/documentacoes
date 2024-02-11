@@ -48,48 +48,40 @@ class DataBaseInsert:
 
         print(retorno)
 
-    def conservantes(self, **kwargs):
-        self.create(Conservante, **kwargs)
-
-    def ingredientes(self, **kwargs):
-        self.create(Ingrediente, **kwargs)
-
-    def tipo_picole(self, **kwargs):
-        self.create(TipoPicole, **kwargs)
-
-    def tipo_embalagem(self, **kwargs):
-        self.create(TipoEmbalagem, **kwargs)
-
-    def sabor(self, **kwargs):
-        self.create(Sabor, **kwargs)
-
-    def aditivo_nutritivo(self, **kwargs):
-        self.create(AditivoNutritivo, **kwargs)
-
-    def sabor(self, **kwargs):
-        self.create(Sabor, **kwargs)
-
-    def aditivo_nutritivo(self, **kwargs):
-        self.create(AditivoNutritivo, **kwargs)
-
 
 if __name__ == '__main__':
     insert = DataBaseInsert()
 
-    # Aditivos nutritivos
-    [insert.aditivo_nutritivo(**dados) for dados in retorne.tupla_aditivos]
+    # As listas com suas classes
+    lista_dicionario = [
+        # Aditivos nutritivos
+        {AditivoNutritivo: retorne.tupla_aditivos},
+        # Sabores
+        {Sabor: retorne.tupla_sabores},
+        # Tipo Embalagem
+        {TipoEmbalagem: retorne.tupla_t_embalagem},
+        # Tipo Picole
+        {TipoPicole: retorne.tupla_t_picole},
+        # Ingrediente
+        {Ingrediente: retorne.tupla_ingredientes},
+        # Conservante
+        {Conservante: retorne.tupla_conservantes},
+    ]
 
-    # Sabores
-    [insert.sabor(**dados) for dados in retorne.tupla_sabores]
+    # Função anônima que filtra 'Chave' e 'Valor' atribuindo a uma lista
+    # agregando respectivamente a uma lista denominada 'dados' onde a mesma é
+    # Chamada em um comprehension que realiza um incremental em cada tupla
+    # contida em 'dados'.
+    # O 'next' é necessário pq no fundo um 'map' ainda é um simples 'generator'.
+    insert_lambda = lambda dicionario: next(
+        map(
+            lambda dados: [
+                insert.create(dados[0], **dicionario) for dicionario in dados[1]
+            ], filter(
+                lambda lista_dados: lista_dados, dicionario.items()
+            )
+        )
+    )
 
-    # Tipo Embalagem
-    [insert.tipo_embalagem(**dados) for dados in retorne.tupla_t_embalagem]
-
-    # Tipo Picole
-    [insert.tipo_picole(**dados) for dados in retorne.tupla_t_picole]
-
-    # Ingrediente
-    [insert.ingredientes(**dados) for dados in retorne.tupla_ingredientes]
-
-    # Conservante
-    [insert.conservantes(**dados) for dados in retorne.tupla_conservantes]
+    # Executor
+    _ = list(map(insert_lambda, lista_dicionario))
