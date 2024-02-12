@@ -1,9 +1,8 @@
-from sqlalchemy import func
+from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.automap import automap_base
 
 from config.db_session import DatabaseManager
 from constants.select import retorne_select
-from utils.funcoes import set_trace
 
 
 class DataBaseSelect:
@@ -35,7 +34,12 @@ class DataBaseSelect:
                 return session.query(self.model).all()
 
             # Realiza adição dos dados instanciados
-            return session.query(self.model).filter(filtro).all()
+            return (
+                session.query(self.model)
+                .options(joinedload('*'))
+                .filter(filtro)
+                .all()
+            )
 
     def select_table(self, tabela):
         if not isinstance(tabela, str):
@@ -53,11 +57,26 @@ class DataBaseSelect:
 
 if __name__ == '__main__':
     with DataBaseSelect() as select:
-        query_full = select.select_table('lote').search()
-        query_filter = select.select_table('lote').search(
-            select.model.tipo_picole_id == 12
+        # Query full - sem parâmetro where
+        query_full = select.select_table('picole').search()
+
+        # Query parcial - com parâmetro where
+        query_filter = select.select_table('picole').search(
+            select.model.tipo_picole_id == 99
         )
 
-        print(len(query_full))
-        print(35 * '-')
         print(len(query_filter))
+        for picole in query_filter:
+            print(35 * '-')
+
+            print(picole.id)
+            print(picole.data_criacao)
+
+            print(picole.sabor_id)
+            print(picole.sabor.nome)
+
+            print(picole.tipo_embalagem.id)
+            print(picole.tipo_embalagem.nome)
+
+            print(picole.tipo_picole.id)
+            print(picole.tipo_picole.nome)
