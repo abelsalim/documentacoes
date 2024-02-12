@@ -14,11 +14,16 @@ class DataBaseSelect:
         self.db_session = DatabaseManager()
         self.session = self.db_session.create_session()
 
-    def __call__(self):
+    def __enter__(self):
         # Gera engine
         self.db_session.create_engine()
         # Prepara base
         self.prepara_base()
+
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.session.close()
 
     def prepara_base(self):
         self.base.prepare(self.db_session._engine, reflect=True)
@@ -47,14 +52,12 @@ class DataBaseSelect:
 
 
 if __name__ == '__main__':
-    select = DataBaseSelect()
-    select()
+    with DataBaseSelect() as select:
+        query_full = select.select_table('lote').search()
+        query_filter = select.select_table('lote').search(
+            select.model.tipo_picole_id == 12
+        )
 
-    query_full = select.select_table('lote').search()
-    query_filter = select.select_table('lote').search(
-        select.model.tipo_picole_id == 12
-    )
-
-    print(len(query_full))
-    print(35 * '-')
-    print(len(query_filter))
+        print(len(query_full))
+        print(35 * '-')
+        print(len(query_filter))
