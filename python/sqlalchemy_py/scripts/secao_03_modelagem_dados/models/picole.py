@@ -14,7 +14,7 @@ from models.aditivo_nutritivo import AditivoNutritivo
 
 
 class Picole(ModelBase):
-    __tablename__: str = 'picoles'
+    __tablename__: str = 'picole'
 
     id: int = sa.Column(
         sa.BigInteger,
@@ -35,7 +35,7 @@ class Picole(ModelBase):
 
     sabor_id: int = sa.Column(
         sa.Integer,
-        sa.ForeignKey('sabores.id')
+        sa.ForeignKey('sabor.id')
     )
 
     sabor: Sabor = orm.relationship(
@@ -45,7 +45,7 @@ class Picole(ModelBase):
 
     tipo_embalagem_id: int = sa.Column(
         sa.Integer,
-        sa.ForeignKey('tipos_embalagem.id')
+        sa.ForeignKey('tipo_embalagem.id')
     )
 
     tipo_embalagem: TipoEmbalagem = orm.relationship(
@@ -55,7 +55,7 @@ class Picole(ModelBase):
 
     tipo_picole_id: int = sa.Column(
         sa.Integer,
-        sa.ForeignKey('tipos_picole.id')
+        sa.ForeignKey('tipo_picole.id')
     )
 
     tipo_picole: TipoPicole = orm.relationship(
@@ -65,17 +65,17 @@ class Picole(ModelBase):
 
     # Picolé pode ter vários ingredientes
     ingredientes_picole = sa.Table(
-        'ingredientes_picole',
+        'ingrediente_picole',
         ModelBase.metadata,
         sa.Column(
             'ingrediente_id',
             sa.Integer,
-            sa.ForeignKey('ingredientes.id')
+            sa.ForeignKey('ingrediente.id')
         ),
         sa.Column(
             'picole_id',
             sa.Integer,
-            sa.ForeignKey('picoles.id')
+            sa.ForeignKey('picole.id')
         )
     )
 
@@ -93,12 +93,12 @@ class Picole(ModelBase):
         sa.Column(
             'conservante_id',
             sa.Integer,
-            sa.ForeignKey('conservantes.id')
+            sa.ForeignKey('conservante.id')
         ),
         sa.Column(
             'picole_id',
             sa.Integer,
-            sa.ForeignKey('picoles.id')
+            sa.ForeignKey('picole.id')
         )
     )
 
@@ -116,12 +116,12 @@ class Picole(ModelBase):
         sa.Column(
             'aditivo_nutritivo_id',
             sa.Integer,
-            sa.ForeignKey('aditivos_nutritivos.id')
+            sa.ForeignKey('aditivo_nutritivo.id')
         ),
         sa.Column(
             'picole_id',
             sa.Integer,
-            sa.ForeignKey('picoles.id')
+            sa.ForeignKey('picole.id')
         )
     )
 

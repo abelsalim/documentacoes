@@ -8,7 +8,7 @@ from models.tipo_picole import TipoPicole
 
 
 class Lote(ModelBase):
-    __tablename__: str = 'lotes'
+    __tablename__: str = 'lote'
 
     id: int = sa.Column(
         sa.BigInteger,
@@ -24,7 +24,7 @@ class Lote(ModelBase):
 
     tipo_picole_id: int = sa.Column(
         sa.Integer,
-        sa.ForeignKey('tipos_picole.id')
+        sa.ForeignKey('tipo_picole.id')
     )
 
     tipo_picole: TipoPicole = orm.relationship(

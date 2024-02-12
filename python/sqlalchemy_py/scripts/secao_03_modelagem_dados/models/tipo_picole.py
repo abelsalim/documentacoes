@@ -6,7 +6,7 @@ from models.models_base import ModelBase
 
 
 class TipoPicole(ModelBase):
-    __tablename__: str = 'tipos_picole'
+    __tablename__: str = 'tipo_picole'
 
     id: int = sa.Column(
         sa.BigInteger,

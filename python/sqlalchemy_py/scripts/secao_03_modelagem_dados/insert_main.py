@@ -1,19 +1,20 @@
 import sqlalchemy as sa
 
-from constants.insert import retorne
-from config.db_session import DatabaseManager
+from models.lote import Lote
 from models.sabor import Sabor
+from models.picole import Picole
+from constants.insert import retorne
+from models.revendedor import Revendedor
+from models.nota_fiscal import NotaFiscal
 from models.tipo_picole import TipoPicole
-from models.tipo_embalagem import TipoEmbalagem
 from models.ingrediente import Ingrediente
 from models.conservante import Conservante
+from config.db_session import DatabaseManager
+from models.tipo_embalagem import TipoEmbalagem
 from models.aditivo_nutritivo import AditivoNutritivo
-from models.revendedor import Revendedor
-from models.lote import Lote
-from models.nota_fiscal import NotaFiscal
-from models.picole import Picole
 
 from utils.funcoes import set_trace
+
 
 class DataBaseInsert:
 
@@ -48,6 +49,7 @@ class DataBaseInsert:
         # Cria objeto específico
         objeto = classe(**dados)
 
+        # Caprua atributos criados
         atributos = [
             k for k, v in objeto.__dict__.items() if isinstance(v, str)
         ]

@@ -10,7 +10,7 @@ from models.models_base import ModelBase
 
 
 class NotaFiscal(ModelBase):
-    __tablename__: str = 'notas_fiscais'
+    __tablename__: str = 'nota_fiscal'
 
     id: int = sa.Column(
         sa.BigInteger,
@@ -26,7 +26,7 @@ class NotaFiscal(ModelBase):
 
     revendedor_id: int = sa.Column(
         sa.Integer,
-        sa.ForeignKey('revendedores.id')
+        sa.ForeignKey('revendedor.id')
     )
 
     revendedor: Revendedor = orm.relationship(
@@ -57,12 +57,12 @@ class NotaFiscal(ModelBase):
         sa.Column(
             'nota_fiscal_id',
             sa.Integer,
-            sa.ForeignKey('notas_fiscais.id')
+            sa.ForeignKey('nota_fiscal.id')
         ),
         sa.Column(
             'lote_id',
             sa.Integer,
-            sa.ForeignKey('lotes.id')
+            sa.ForeignKey('lote.id')
         )
     )
 

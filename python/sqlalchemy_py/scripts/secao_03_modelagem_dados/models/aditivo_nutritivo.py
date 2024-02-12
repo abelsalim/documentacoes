@@ -6,7 +6,7 @@ from models.models_base import ModelBase
 
 
 class AditivoNutritivo(ModelBase):
-    __tablename__: str = 'aditivos_nutritivos'
+    __tablename__: str = 'aditivo_nutritivo'
 
     id: int = sa.Column(
         sa.BigInteger,

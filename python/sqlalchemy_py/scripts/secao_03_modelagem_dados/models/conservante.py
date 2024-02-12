@@ -6,7 +6,7 @@ from models.models_base import ModelBase
 
 
 class Conservante(ModelBase):
-    __tablename__: str = 'conservantes'
+    __tablename__: str = 'conservante'
 
     id: int = sa.Column(
         sa.BigInteger,

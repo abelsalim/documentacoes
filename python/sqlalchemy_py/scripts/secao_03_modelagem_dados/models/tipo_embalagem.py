@@ -6,7 +6,7 @@ from models.models_base import ModelBase
 
 
 class TipoEmbalagem(ModelBase):
-    __tablename__: str = 'tipos_embalagem'
+    __tablename__: str = 'tipo_embalagem'
 
     id: int = sa.Column(
         sa.BigInteger,

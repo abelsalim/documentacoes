@@ -6,7 +6,7 @@ from models.models_base import ModelBase
 
 
 class Revendedor(ModelBase):
-    __tablename__: str = 'revendedores'
+    __tablename__: str = 'revendedor'
 
     id: int = sa.Column(
         sa.BigInteger,

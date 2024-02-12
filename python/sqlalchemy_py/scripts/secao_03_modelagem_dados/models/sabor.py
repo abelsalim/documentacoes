@@ -6,7 +6,7 @@ from models.models_base import ModelBase
 
 
 class Sabor(ModelBase):
-    __tablename__: str = 'sabores'
+    __tablename__: str = 'sabor'
 
     id: int = sa.Column(
         sa.BigInteger,
