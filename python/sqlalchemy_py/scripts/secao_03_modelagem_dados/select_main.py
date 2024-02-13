@@ -4,6 +4,8 @@ from sqlalchemy.ext.automap import automap_base
 from config.db_session import DatabaseManager
 from constants.select import retorne_select
 
+from utils.funcoes import set_trace
+
 
 class DataBaseSelect:
 
@@ -27,19 +29,22 @@ class DataBaseSelect:
     def prepara_base(self):
         self.base.prepare(self.db_session._engine, reflect=True)
 
-    def search(self, filtro=False):
+    def search(self, **kwargs):
         with self.session as session:
-            if isinstance(filtro, bool):
-                # Realiza query full
-                return session.query(self.model).all()
+            # Montando query base
+            query = session.query(self.model).options(joinedload('*'))
 
-            # Realiza adição dos dados instanciados
-            return (
-                session.query(self.model)
-                .options(joinedload('*'))
-                .filter(filtro)
-                .all()
-            )
+            # Inclusão de argumentos
+            for key, value in kwargs.items():
+                match key:
+                    case 'filtro':
+                        query = query.filter(value)
+                    case 'order_by':
+                        query = query.order_by(value)
+                    case 'limit':
+                        query = query.limit(value)
+
+            return query.all()
 
     def select_table(self, tabela):
         if not isinstance(tabela, str):
@@ -58,11 +63,15 @@ class DataBaseSelect:
 if __name__ == '__main__':
     with DataBaseSelect() as select:
         # Query full - sem parâmetro where
-        query_full = select.select_table('picole').search()
+        query_full = select.select_table('picole').search(
+            limit=10
+        )
 
         # Query parcial - com parâmetro where
         query_filter = select.select_table('picole').search(
-            select.model.tipo_picole_id == 99
+            filtro=select.model.tipo_picole_id == 99,
+            order_by=select.model.tipo_embalagem_id.desc(),
+            limit=2
         )
 
         print(len(query_filter))
@@ -80,3 +89,8 @@ if __name__ == '__main__':
 
             print(picole.tipo_picole.id)
             print(picole.tipo_picole.nome)
+
+        print(35 * '-')
+        print(len(query_full))
+        print(35 * '-')
+        print(len(query_filter))
