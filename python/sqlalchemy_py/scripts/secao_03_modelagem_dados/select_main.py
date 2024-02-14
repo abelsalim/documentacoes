@@ -11,6 +11,7 @@ class DataBaseSelect:
 
     def __init__(self):
         self.model = False
+        self.list_models = False
         self.base = automap_base()
         self.db_session = DatabaseManager()
         self.session = self.db_session.create_session()
@@ -20,6 +21,8 @@ class DataBaseSelect:
         self.db_session.create_engine()
         # Prepara base
         self.prepara_base()
+        # Gera lista dos models
+        self.list_models = list(map(lambda x: x.__name__ , self.base.classes))
 
         return self
 
@@ -43,8 +46,10 @@ class DataBaseSelect:
                         query = query.order_by(value)
                     case 'limit':
                         query = query.limit(value)
+                    case 'count':
+                        query = query.count()
 
-            return query.all()
+            return query if kwargs.get('count') else query.all()
 
     def select_table(self, tabela):
         if not isinstance(tabela, str):
@@ -64,7 +69,8 @@ if __name__ == '__main__':
     with DataBaseSelect() as select:
         # Query full - sem parâmetro where
         query_full = select.select_table('picole').search(
-            limit=10
+            count=True,
+            # limit=10
         )
 
         # Query parcial - com parâmetro where
@@ -74,7 +80,7 @@ if __name__ == '__main__':
             limit=2
         )
 
-        print(len(query_filter))
+        print(query_full)
         for picole in query_filter:
             print(35 * '-')
 
@@ -91,6 +97,6 @@ if __name__ == '__main__':
             print(picole.tipo_picole.nome)
 
         print(35 * '-')
-        print(len(query_full))
+        # print(len(query_full))
         print(35 * '-')
         print(len(query_filter))
